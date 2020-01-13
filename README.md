@@ -3,7 +3,7 @@
 Electron IPC wrapper similar to Electron v7.
 
 [![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![DefinitelyTyped][dts-image]][dts-url]  
-[![Coverage percentage][coveralls-image]][coveralls-url]
+[![Build Status][githubactions-image]][githubactions-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
 
@@ -54,7 +54,7 @@ export const unexpected = (): Response => {
 
 ```ts
 // handler.ts
-import { Handler } from '@/e7ipc-electron'
+import { Handler } from '@yagisumi/e7ipc-electron'
 import { Request, Response } from './messages.ts'
 
 export const handler: Handler<Request, Response> = async (_, req) => {
@@ -101,6 +101,8 @@ async function foo() {
 
 [MIT License](https://opensource.org/licenses/MIT)
 
+[githubactions-image]: https://img.shields.io/github/workflow/status/yagisumi/node-e7ipc-electron/build?logo=github&style=flat-square
+[githubactions-url]: https://github.com/yagisumi/node-e7ipc-electron/actions
 [npm-image]: https://img.shields.io/npm/v/@yagisumi/e7ipc-electron.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@yagisumi/e7ipc-electron
 [packagephobia-image]: https://flat.badgen.net/packagephobia/install/@yagisumi/e7ipc-electron
