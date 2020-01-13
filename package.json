@@ -4,7 +4,7 @@
   "description": "Electron IPC wrapper similar to Electron v7.",
   "keywords": [],
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "private": true,
   "main": "lib/e7ipc-electron",
