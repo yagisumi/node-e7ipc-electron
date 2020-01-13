@@ -1,4 +1,6 @@
 import typescript from 'rollup-plugin-typescript2'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   input: './src/e7ipc-electron.ts',
@@ -8,9 +10,11 @@ export default {
     sourcemap: true,
     sourcemapExcludeSources: true,
   },
-  external: [],
+  external: ['electron'],
 
   plugins: [
+    resolve(),
+    commonjs(),
     typescript({
       tsconfig: './tsconfig.json',
       tsconfigOverride: {
