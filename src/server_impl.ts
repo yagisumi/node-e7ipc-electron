@@ -1,6 +1,10 @@
 import { Server, Handler } from '@yagisumi/e7ipc-types'
 import { MESSAGE, ResponseMessage, RequestMessage } from './messages'
-import { IpcMain, IpcMainEvent } from 'electron'
+import { IpcMain } from 'electron'
+
+interface IpcMainEvent {
+  reply(channel: string, ...args: any): void
+}
 
 export class RequestDispacher {
   private readonly ipc: IpcMain
@@ -9,7 +13,7 @@ export class RequestDispacher {
     this.ipc = ipc
     ipc.on(MESSAGE, (ev, msg: RequestMessage<any>) => {
       setImmediate(() => {
-        this.handle(ev, msg)
+        this.handle(ev as any, msg)
       })
     })
   }
