@@ -1,50 +1,109 @@
-# e7ipc-electron
+# @yagisumi/e7ipc-electron
 
-Welcome
+Electron IPC wrapper similar to Electron v7.
 
 [![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![DefinitelyTyped][dts-image]][dts-url]  
-[![Build Status][travis-image]][travis-url] [![Build Status][appveyor-image]][appveyor-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+[![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
 
 ```sh
-$ npm i e7ipc-electron
+$ npm i @yagisumi/e7ipc-electron
 ```
+
+## Requirements
+
+`electron` v7 or higher
 
 ## Usage
 
-- javascript
+```ts
+// messages.ts
+export const CHANNEL = 'app'
 
-```js
-const XXXXXXXXX = require('e7ipc-electron').e7ipc-electron;
+type MapType<T, U = keyof T> = U extends keyof T ? T[U] : never
 
-XXXXXXXXX();
+export interface Requests {
+  hello: {
+    type: 'hello'
+  }
+  bye: {
+    type: 'bye'
+  }
+}
+
+export type Request = MapType<Requests>
+
+export interface Responses {
+  ok: {
+    type: 'ok'
+  }
+  error: {
+    type: 'error'
+    message: string
+  }
+}
+
+export type Response = MapType<Responses>
+
+export const unexpected = (): Response => {
+  return { type: 'error', message: 'unexpected' }
+}
 ```
-
-- typescript
 
 ```ts
-import { e7ipc-electron } from 'e7ipc-electron';
+// handler.ts
+import { Handler } from '@/e7ipc-electron'
+import { Request, Response } from './messages.ts'
 
-XXXXXXXXX();
+export const handler: Handler<Request, Response> = async (_, req) => {
+  if (req.type === 'hello') {
+    return { type: 'ok' }
+  } else if (req.type === 'bye') {
+    return { type: 'error', message: `Don't say goodbye.` }
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const unreachable: never = req
+    throw 'unreachable'
+  }
+}
 ```
 
-## Documentation
+```ts
+// process: Main
+import { ipcMain } from 'electron'
+import { Request, Response, CHANNEL } from './messages'
+import { handler } from './handler'
+import { createServer } from '@yagisumi/e7ipc-electron'
 
-https://yagisumi.github.io/node-e7ipc-electron/
+const server = createServer<Request, Response>(CHANNEL, ipcMain)
+server.handle(handler)
+```
+
+```ts
+// Process: Renderer
+import { ipcRenderer } from 'electron'
+import { Request, Response, CHANNEL, unexpected } from './messages'
+import { createClient } from '@yagisumi/e7ipc-electron'
+
+const client = createClient<Request, Response>(CHANNEL, ipcRenderer)
+
+async function foo() {
+  const r1 = await client.invoke({ type: 'hello' }).catch(unexpected)
+  // r1: { type: 'ok' }
+  const r2 = await client.invoke({ type: 'bye' }).catch(unexpected)
+  // r2: { type: 'error', message: `Don't say goodbye.` }
+}
+```
 
 ## License
 
 [MIT License](https://opensource.org/licenses/MIT)
 
-[npm-image]: https://img.shields.io/npm/v/e7ipc-electron.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/e7ipc-electron
-[packagephobia-image]: https://flat.badgen.net/packagephobia/install/e7ipc-electron
-[packagephobia-url]: https://packagephobia.now.sh/result?p=e7ipc-electron
-[travis-image]: https://img.shields.io/travis/yagisumi/node-e7ipc-electron.svg?style=flat-square
-[travis-url]: https://travis-ci.org/yagisumi/node-e7ipc-electron
-[appveyor-image]: https://img.shields.io/appveyor/ci/yagisumi/node-e7ipc-electron.svg?logo=appveyor&style=flat-square
-[appveyor-url]: https://ci.appveyor.com/project/yagisumi/node-e7ipc-electron
+[npm-image]: https://img.shields.io/npm/v/@yagisumi/e7ipc-electron.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@yagisumi/e7ipc-electron
+[packagephobia-image]: https://flat.badgen.net/packagephobia/install/@yagisumi/e7ipc-electron
+[packagephobia-url]: https://packagephobia.now.sh/result?p=@yagisumi/e7ipc-electron
 [coveralls-image]: https://img.shields.io/coveralls/yagisumi/node-e7ipc-electron.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/github/yagisumi/node-e7ipc-electron?branch=master
 [dts-image]: https://img.shields.io/badge/DefinitelyTyped-.d.ts-blue.svg?style=flat-square
