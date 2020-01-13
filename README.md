@@ -14,7 +14,7 @@ $ npm i @yagisumi/e7ipc-electron
 ## Requirements
 
 [@yagisumi/e7ipc-electron7](https://www.npmjs.com/package/@yagisumi/e7ipc-electron7) ― `electron` v7 or higher<br>
-[@yagisumi/e7ipc-electron](https://www.npmjs.com/package/@yagisumi/e7ipc-electron) ― `electron` v4 or higher
+[@yagisumi/e7ipc-electron](https://www.npmjs.com/package/@yagisumi/e7ipc-electron) ― `electron` v5 or higher
 
 ## Usage
 
@@ -55,7 +55,7 @@ export const unexpected = (): Response => {
 ```ts
 // handler.ts
 import { Handler } from '@yagisumi/e7ipc-electron'
-import { Request, Response } from './messages.ts'
+import { Request, Response } from './messages'
 
 export const handler: Handler<Request, Response> = async (_, req) => {
   if (req.type === 'hello') {
