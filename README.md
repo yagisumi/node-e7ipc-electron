@@ -13,7 +13,8 @@ $ npm i @yagisumi/e7ipc-electron
 
 ## Requirements
 
-`electron` v7 or higher
+[@yagisumi/e7ipc-electron7](https://www.npmjs.com/package/@yagisumi/e7ipc-electron7) ― `electron` v7 or higher<br>
+[@yagisumi/e7ipc-electron](https://www.npmjs.com/package/@yagisumi/e7ipc-electron) ― `electron` v4 or higher
 
 ## Usage
 
