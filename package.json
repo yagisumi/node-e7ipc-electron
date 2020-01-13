@@ -6,7 +6,6 @@
   "engines": {
     "node": ">= 8.0.0"
   },
-  "private": true,
   "main": "lib/e7ipc-electron",
   "module": "lib/e7ipc-electron.mjs",
   "types": "lib/e7ipc-electron.d.ts",
