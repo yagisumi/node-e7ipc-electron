@@ -97,6 +97,29 @@ async function foo() {
 }
 ```
 
+## Test
+
+You can test handler with `@yagisumi/e7ipc-mock`
+
+```ts
+import { Mock } from '@yagisumi/e7ipc-mock'
+import { Request, Response } from '@/messages'
+import { handler } from '@/handler'
+
+describe('handler', () => {
+  test('request', async () => {
+    const mock = new Mock<Request, Response>()
+    mock.handle(handler)
+
+    const r1 = await mock.invoke({ type: 'hello' })
+    expect(r1.type).toBe('ok')
+
+    const r2 = await mock.invoke({ type: 'bye' })
+    expect(r2.type).toBe('error')
+  })
+})
+```
+
 ## License
 
 [MIT License](https://opensource.org/licenses/MIT)
