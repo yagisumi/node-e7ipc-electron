@@ -5,7 +5,7 @@ import { IpcRenderer } from 'electron'
 
 export function getCounter() {
   let i = 0
-  return function() {
+  return function () {
     i = (i + 1) & 0xffffff
     return i
   }
